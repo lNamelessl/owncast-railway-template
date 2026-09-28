@@ -1,5 +1,8 @@
 # Owncast on Railway
 
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/owncast-template)
+
+
 Your own live streaming server — RTMP ingest from OBS, HLS playback in any browser, built-in chat. One service, one volume, no external database.
 
 Deployed from the official image [`owncast/owncast:0.3.0`](https://hub.docker.com/r/owncast/owncast) (pinned).
