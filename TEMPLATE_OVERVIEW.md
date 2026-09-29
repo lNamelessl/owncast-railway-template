@@ -1,6 +1,6 @@
 # Owncast on Railway — Your Own Live Streaming Server
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/owncast-template)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/owncast-template-final)
 
 Self-hosted live streaming in one click: push a stream from OBS (or any RTMP encoder), viewers watch in any browser over HLS, and chat is built in. Deployed from the official [`owncast/owncast:0.3.0`](https://hub.docker.com/r/owncast/owncast) image — one service, one persistent volume, no external database.
 
@@ -33,7 +33,7 @@ Find the RTMP host/port under your service's Settings → Networking → TCP Pro
 | HTTP port 8080 | Web player, `/admin` panel, chat, HLS playback (`/hls/stream.m3u8`) |
 | TCP proxy 1935 | RTMP ingest from OBS / ffmpeg (external port assigned by Railway) |
 | Volume `/app/data` | SQLite database (all config, keys, settings), recordings, logs, backups |
-| Healthcheck | `GET /api/status` |
+| Health check | service self-reports via `GET /api/status`; Railway restart policy ON_FAILURE |
 
 # Deploy and Host
 
@@ -43,7 +43,7 @@ This template provisions a single Railway service running the official Owncast D
 
 ## Why Deploy
 
-Hosting Owncast on Railway gives you a URL-based streaming server without renting a VPS or opening firewall ports: RTMP ingest works through Railway's TCP proxy and HLS playback is served over HTTPS through the standard public domain — no UDP required. Scaling up is one click, usage is billed per second (a mostly-idle server costs pennies while you are not streaming), and the volume keeps your configuration, recordings, and logs across restarts. Compared to running the Docker image manually, this template already wires the three things that usually trip people up on Railway: volume permissions for the non-root image, the TCP proxy for RTMP, and the HTTP healthcheck endpoint.
+Hosting Owncast on Railway gives you a URL-based streaming server without renting a VPS or opening firewall ports: RTMP ingest works through Railway's TCP proxy and HLS playback is served over HTTPS through the standard public domain — no UDP required. Scaling up is one click, usage is billed per second (a mostly-idle server costs pennies while you are not streaming), and the volume keeps your configuration, recordings, and logs across restarts. Compared to running the Docker image manually, this template already wires the two things that usually trip people up on Railway: volume permissions for the non-root image (`RAILWAY_RUN_UID=0`) and the TCP proxy for RTMP. For liveness, the service exposes `GET /api/status` (returns `"online"`, version, viewer counts) and Railway's ON_FAILURE restart policy recovers crashed containers automatically.
 
 ## Common Use Cases
 
